@@ -1,15 +1,18 @@
 import React from 'react';
+import Friend from './Friend.js';
+import friends from './friends.js';
 
 
 class FriendsList extends React.Component {
-  constructor( probs ){
-    super( probs );
+  constructor( props ){
+    super( props );
 
     this.state = {
       searchText: "",
       orderBy: "name",
       order:"ascending"
-    };
+    }
+  }
 
     handleChange (feild, event){
       this.state({[feild] : event.target.value});
@@ -18,9 +21,19 @@ class FriendsList extends React.Component {
 
 
 
-  }
+
 
   render(){
+    const friendsList = friends.map( friend =>(
+      <Friend
+        currentLocation={ friend.current_location || {}}
+        friendCount={ friend.friend_count}
+        key={friend.$$hashKey}
+        name={friend.pic_square}
+        status={ friend.status ? friend.status.message: ""}
+      />
+    ));
+
     return(
       <div>
           <form className="form-inline searchForm" role="form">
@@ -34,14 +47,15 @@ class FriendsList extends React.Component {
                   </select>
 
                   <select onChange={this.handleChange.bind(this,"order")} value={this.state.order} className="input-medium">
-                      <option value"descending">Descending</option>
-                      <option value"ascending">Ascending</option>
+                      <option value="descending">Descending</option>
+                      <option value="ascending">Ascending</option>
                   </select>
 
               </div>
           </form>
 
           <ul>
+          {friendsList}
           </ul>
       </div>
     );
